@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+
+data/raw/*
+data?processed/*
+!data/raw?.gitkeep
+!data?processed/.gitkeep
+
+dbt_transit/target/
+dbt_transit/bdt_packages/
+dbt_transit/logs/
+
+.DS_Store

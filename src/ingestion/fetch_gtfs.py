@@ -25,7 +25,7 @@ def download_and_extract(url: str, output_dir: Path) -> Path:
     return output_dir
 
 ## download_and_extract is a func that takes a URL Path and target dir and returns the output dir Path 
-    ## - creating any dirs along the way if none exist using parents=True and prevents python from throwing an error a dir already exists using exists_ok=True
+    ## - creating any dirs along the way if none exist using parents=True and prevents python from throwing an error if a dir already exists using exists_ok=True
     ## - requests.get sends a GET request to download ZIP boundles using time=30 as defensive programming tactic in the event the transit agency stops requesting preventing indefinite wait times
     ## - along the way response.raise_for_status() checks the HTTP server for returing errors raising an exception and stops execution  
     ## - finally zipfile.ZipFIle(BytesIO(response.content)) opens raw response bytes inside memory via BytesIO interpreting them as ZIP archive and extracts all text files into raw/data and logs the conformation to stdout and returns the path 

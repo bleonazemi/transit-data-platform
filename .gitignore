@@ -4,8 +4,11 @@ __pycache__/
 
 data/raw/*
 data?processed/*
-!data/raw?.gitkeep
-!data?processed/.gitkeep
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+*.duckdb
+*.duckdb.wal
+
 
 dbt_transit/target/
 dbt_transit/bdt_packages/

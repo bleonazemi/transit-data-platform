@@ -1,0 +1,8 @@
+dbt_transit:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: '../data/transit.duckdb'
+      threads: 4
+

@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: mart_route_summary
+    description: "Route- and direction-level summary of scheduled trips, stop counts, and average trip duration."
+    columns:
+      - name: route_id
+        description: "Unique GTFS identifier for the transit route."
+        tests:
+          - not_null
+      - name: total_scheduled_trips
+        description: "Total count of scheduled trips for this route and direction."
+        tests:
+          - not_null

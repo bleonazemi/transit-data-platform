@@ -1,0 +1,65 @@
+version: 2
+
+models:
+  - name: stg_stops
+    description: "Cleaned CTA stop locations and station hierarchy."
+    columns:
+      - name: stop_id
+        description: "Primary key uniquely identifying a stop or station."
+        data_tests:
+          - unique
+          - not_null
+      - name: stop_name
+        data_tests:
+          - not_null
+
+  - name: stg_routes
+    description: "Cleaned CTA transit routes with standardized mode labels."
+    columns:
+      - name: route_id
+        description: "Primary key uniquely identifying a route."
+        data_tests:
+          - unique
+          - not_null
+      - name: route_mode
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['Rail', 'Bus', 'Other']
+
+  - name: stg_trips
+    description: "Cleaned scheduled transit trips linked to routes."
+    columns:
+      - name: trip_id
+        description: "Primary key uniquely identifying a scheduled trip."
+        data_tests:
+          - unique
+          - not_null
+      - name: route_id
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_routes')
+              field: route_id
+
+  - name: stg_stop_times
+    description: "Scheduled stop arrival and departure events per trip."
+    columns:
+      - name: trip_id
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_trips')
+              field: trip_id
+      - name: stop_id
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_stops')
+              field: stop_id
+      - name: stop_sequence
+        data_tests:
+          - not_null
+      - name: arrival_seconds_since_midnight
+        data_tests:
+          - not_null

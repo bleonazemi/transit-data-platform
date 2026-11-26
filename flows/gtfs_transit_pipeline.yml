@@ -10,6 +10,7 @@ tasks:
         type: io.kestra.plugin.git.Clone
         url: https://github.com/bleonazemi/transit-data-platform
         branch: main
+        directory: .
 
       - id: ingest_gtfs
         type: io.kestra.plugin.scripts.python.Commands

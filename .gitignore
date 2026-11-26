@@ -19,3 +19,7 @@ dbt_transit/logs/
 # Local warehouse data and dbt user telemetry
 data/
 dbt_transit/.user.yml
+
+# Local warehouse data and dbt user telemetry
+data/
+dbt_transit/.user.yml

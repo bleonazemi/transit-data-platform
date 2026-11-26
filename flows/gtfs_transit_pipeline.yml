@@ -37,6 +37,7 @@ tasks:
         retry:
           type: exponential
           interval: PT10S
+          maxInterval: PT1M
           maxAttempt: 3
 
 errors:

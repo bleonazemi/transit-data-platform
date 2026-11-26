@@ -22,19 +22,11 @@ tasks:
           - python src/ingestion/fetch_gtfs.py
 
       - id: dbt_build
-        type: io.kestra.plugin.dbt.cli.DbtCLI
+        type: io.kestra.plugin.scripts.shell.Commands
         containerImage: ghcr.io/kestra-io/dbt-duckdb:latest
-        projectDir: dbt_transit
-        profiles: |
-          dbt_transit:
-            target: prod
-            outputs:
-              prod:
-                type: duckdb
-                path: '../data/transit.duckdb'
-                threads: 4
         commands:
-          - dbt build
+          - ls -la
+          - cd dbt_transit && dbt build --profiles-dir .
         retry:
           type: exponential
           interval: PT10S

@@ -1,0 +1,50 @@
+id: gtfs_transit_pipeline
+namespace: transit
+description: End-to-end CTA GTFS ingestion and dbt transformation pipeline synced from Git
+
+tasks:
+  - id: working_dir
+    type: io.kestra.plugin.core.flow.WorkingDirectory
+    tasks:
+      - id: clone_repo
+        type: io.kestra.plugin.git.Clone
+        url: https://github.com/bleonazemi/transit-data-platform
+        branch: main
+
+      - id: ingest_gtfs
+        type: io.kestra.plugin.scripts.python.Commands
+        containerImage: ghcr.io/kestra-io/dbt-duckdb:latest
+        beforeCommands:
+          - pip install -q polars requests
+        commands:
+          - mkdir -p data
+          - python src/ingestion/fetch_gtfs.py
+
+      - id: dbt_build
+        type: io.kestra.plugin.dbt.cli.DbtCLI
+        containerImage: ghcr.io/kestra-io/dbt-duckdb:latest
+        projectDir: dbt_transit
+        profiles: |
+          dbt_transit:
+            target: prod
+            outputs:
+              prod:
+                type: duckdb
+                path: '../data/transit.duckdb'
+                threads: 4
+        commands:
+          - dbt build
+        retry:
+          type: exponential
+          interval: PT10S
+          maxAttempt: 3
+
+errors:
+  - id: alert_on_failure
+    type: io.kestra.plugin.core.log.Log
+    message: "Pipeline {{ flow.id }} failed on execution {{ execution.id }}"
+
+triggers:
+  - id: daily_schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 6 * * *"

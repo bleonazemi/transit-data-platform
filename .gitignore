@@ -15,3 +15,7 @@ dbt_transit/bdt_packages/
 dbt_transit/logs/
 
 .DS_Store
+
+# Local warehouse data and dbt user telemetry
+data/
+dbt_transit/.user.yml
